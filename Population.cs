@@ -13,6 +13,13 @@ namespace QueensGA
         public Population(int populationSize)
         {
             solutions = new Solution[populationSize];
+
+            for (int i = 0; i < solutions.Length; i++)
+            {
+                Solution solution = new Solution();
+                solution.Generate();
+                solutions[i] = solution;
+            }
         }
 
         /// <summary>
