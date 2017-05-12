@@ -10,16 +10,24 @@ namespace QueensGA
     {
         Solution[] solutions;
 
-        public Population(int populationSize)
+        public Population(int populationSize, bool initialise)
         {
             solutions = new Solution[populationSize];
 
             for (int i = 0; i < solutions.Length; i++)
             {
                 Solution solution = new Solution();
-                solution.Generate();
+
+                if(initialise)
+                    solution.Generate();
+
                 solutions[i] = solution;
             }
+        }
+
+        public void SaveSolution(int index, Solution solution)
+        {
+            solutions[index] = solution;
         }
 
         /// <summary>
