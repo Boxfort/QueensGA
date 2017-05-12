@@ -14,14 +14,15 @@ namespace QueensGA
         {
             solutions = new Solution[populationSize];
 
-            for (int i = 0; i < solutions.Length; i++)
+            if (initialise)
             {
-                Solution solution = new Solution();
-
-                if(initialise)
+                for (int i = 0; i < solutions.Length; i++)
+                {  
+                    Solution solution = new Solution();
                     solution.Generate();
-
-                solutions[i] = solution;
+                    solutions[i] = solution;
+                }
+                
             }
         }
 
@@ -46,6 +47,9 @@ namespace QueensGA
 
             for(int i = 0; i < solutions.Length; i++)
             {
+                if (solutions[i] == null)
+                    break;
+
                 int fitness = solutions[i].EvaluateFitness();
                 if(fitness < fittestFitness)
                 {
