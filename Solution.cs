@@ -12,9 +12,23 @@ namespace QueensGA
         const int BOARD_SIZE = 64;
 
         bool[] board;
+
+        /// <summary>
+        /// Initialise a blank soltution.
+        /// </summary>
         public Solution()
         {
             board = new bool[BOARD_SIZE];
+        }
+
+        /// <summary>
+        /// Initialise a new solution which is the child of two parent solutions.
+        /// </summary>
+        /// <param name="parent1">The first parent solution.</param>
+        /// <param name="parent2">The second parent solution.</param>
+        public Solution(Solution parent1, Solution parent2)
+        {
+            //Create a child using both parents.
         }
 
         /// <summary>
