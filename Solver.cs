@@ -42,6 +42,8 @@ namespace QueensGA
 
             //Mutate Population
 
+            Console.WriteLine("Fittest = " + newPopulation.GetFittest().EvaluateFitness());
+
             _population = newPopulation;
         }
 

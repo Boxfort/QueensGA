@@ -6,6 +6,12 @@ using System.Threading.Tasks;
 
 namespace QueensGA
 {
+    struct Queen
+    {
+        public int x;
+        public int y;
+    }
+
     class Solution
     {
         const int NUM_QUEENS = 8;
@@ -14,14 +20,14 @@ namespace QueensGA
 
         //Directions on the board relative to the current position.
         int[] offsets = { -9, -8, -7, 7, 8, 9 };
-        bool[] board;
+        Queen[] queens;
 
         /// <summary>
         /// Initialise a blank soltution.
         /// </summary>
         public Solution()
         {
-            board = new bool[BOARD_SIZE];
+            queens = new Queen[NUM_QUEENS];
         }
 
         /// <summary>
@@ -38,19 +44,36 @@ namespace QueensGA
         /// Generate a new random layout of 8 queens.
         /// </summary>
         public void Generate()
-        {
+        { 
             Random rand = new Random();
-            int queens = 0;
+            int count = 0;
 
-            while (queens < NUM_QUEENS)
+            while (count < NUM_QUEENS)
             {
-                int position = rand.Next(64);
-                if (!board[position])
+                int x = rand.Next(8);
+                int y = rand.Next(8);
+
+                Queen q = new Queen();
+
+                q.x = x;
+                q.y = y;
+
+                if (!QueenExists(q))
                 {
-                    board[position] = true;
-                    queens++;
+                    queens[count] = q;
+                    count++;
                 }
             }
+        }
+
+        private bool QueenExists(Queen queen)
+        {
+            foreach(Queen q in queens)
+            {
+                if (q.x == queen.x && q.y == queen.y)
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -69,6 +92,7 @@ namespace QueensGA
         {
             int fitness = 0;
 
+            /*
             for(int i = 0; i < BOARD_SIZE; i++)
             {
                 if(board[i])
@@ -117,6 +141,23 @@ namespace QueensGA
                             rightOffset -= 1;
                         }
                     }
+                }
+            }
+            */
+
+            for(int i = 0; i < queens.Length; i++)
+            {
+                for(int j = i + 1; j < queens.Length; j++)
+                {
+                    //If horizontal or vertical
+                    if (queens[i].x == queens[j].x || queens[i].y == queens[j].y)
+                        fitness++;
+
+                    //If diagonal
+                    int d1 = Math.Abs(queens[i].y - queens[i].x);
+                    int d2 = Math.Abs(queens[j].y - queens[j].x);
+                    if (d1 == d2)
+                        fitness++;
                 }
             }
 
