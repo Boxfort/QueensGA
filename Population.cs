@@ -30,8 +30,13 @@ namespace QueensGA
             solutions[index] = solution;
         }
 
+        public Solution GetSolution(int index)
+        {
+            return solutions[index];
+        }
+
         /// <summary>
-        /// Evaluate the population and return the fittest solution.
+        /// Evaluate the population and return the fittest solution. Lower is Better.
         /// </summary>
         /// <returns>Solution with the lowest fitness.</returns>
         public Solution GetFittest()
@@ -42,7 +47,7 @@ namespace QueensGA
             for(int i = 0; i < solutions.Length; i++)
             {
                 int fitness = solutions[i].EvaluateFitness();
-                if(fitness > fittestFitness)
+                if(fitness < fittestFitness)
                 {
                     fittest = solutions[i];
                     fittestFitness = fitness;
