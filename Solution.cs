@@ -37,7 +37,34 @@ namespace QueensGA
         /// <param name="parent2">The second parent solution.</param>
         public Solution(Solution parent1, Solution parent2)
         {
+            queens = new Queen[NUM_QUEENS];
+
             //Create a child using both parents.
+            Random rand = new Random();
+            int crossover = rand.Next(NUM_QUEENS);
+
+            for(int i = 0; i < crossover; i++)
+            {
+                queens[i] = parent1.GetQueen(i);
+            }
+
+            for (int i = 0; i < NUM_QUEENS; i++)
+            {
+                if (crossover == NUM_QUEENS - 1)
+                    break;
+
+                Queen q = parent2.GetQueen(i);
+                if (!QueenExists(q))
+                {
+                    queens[crossover] = q;
+                    crossover++;
+                }
+            }
+        }
+
+        public Queen GetQueen(int index)
+        {
+            return queens[index];
         }
 
         /// <summary>

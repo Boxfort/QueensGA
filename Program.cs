@@ -10,7 +10,10 @@ namespace QueensGA
     {
         static void Main(string[] args)
         {
+            Solver sv = new Solver();
 
+            sv.EvolvePopulation();
+            Console.ReadKey();
         }
     }
 }
