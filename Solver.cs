@@ -8,9 +8,9 @@ namespace QueensGA
 {
     class Solver
     {
-        private const int POPULATION_SIZE = 100;
-        private const double MUTATION_RATE = 0.015;
-        private const int TOURNAMENT_SIZE = 5;
+        private const int POPULATION_SIZE = 400;
+        private const double MUTATION_RATE = 0.005;
+        private const int TOURNAMENT_SIZE = 15;
         private const bool ELITISM = true;
 
         private Population _population;
@@ -29,6 +29,7 @@ namespace QueensGA
             {
                 newPopulation.SaveSolution(0, _population.GetFittest());
                 elitismOffset = 1;
+                Console.WriteLine("FITTEST SAVED.");
             }
 
             for (int i = elitismOffset; i < POPULATION_SIZE; i++)
@@ -42,9 +43,9 @@ namespace QueensGA
 
             MutatePopulation(newPopulation);
 
-            Console.WriteLine("Fittest = " + newPopulation.GetFittest().EvaluateFitness());
-
             _population = newPopulation;
+
+            Console.WriteLine("Fittest = " + _population.GetFittest().EvaluateFitness());
         }
 
         private void MutatePopulation(Population population)
@@ -74,6 +75,35 @@ namespace QueensGA
             // Get the fittest tour
             Solution fittest = tournament.GetFittest();
             return fittest;
+        }
+
+        public void DrawFittest()
+        {
+            Solution fittest = _population.GetFittest();
+
+            for(int x = 0; x < 8; x++)
+            {
+                for (int y = 0; y < 8; y++)
+                {
+                    bool queen = false;
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        if (fittest.GetQueen(i).x == x && fittest.GetQueen(i).y == y)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkRed;
+
+                            Console.Write("X ");
+                            queen = true;
+                            break;
+                        }
+                    }
+                    Console.BackgroundColor = ConsoleColor.Black;
+                    if (!queen)
+                        Console.Write(0+" ");
+                }
+                Console.WriteLine("");
+            }
         }
     }
 }
