@@ -40,11 +40,24 @@ namespace QueensGA
                 newPopulation.SaveSolution(i, child);
             }
 
-            //Mutate Population
+            MutatePopulation(newPopulation);
 
             Console.WriteLine("Fittest = " + newPopulation.GetFittest().EvaluateFitness());
 
             _population = newPopulation;
+        }
+
+        private void MutatePopulation(Population population)
+        {
+            Random rand = new Random();
+
+            for(int i = 0; i < POPULATION_SIZE; i++)
+            {
+                if(rand.NextDouble() < MUTATION_RATE)
+                {
+                    population.GetSolution(i).Mutate();
+                }
+            }
         }
 
         private Solution TournamentSelect(Population population)
