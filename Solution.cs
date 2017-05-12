@@ -104,11 +104,25 @@ namespace QueensGA
         }
 
         /// <summary>
-        /// Mutate the solution.
+        /// Mutate the solution by randomising the position of one queen.
         /// </summary>
         public void Mutate()
         {
-            throw new NotImplementedException();
+            Random rand = new Random();
+            Queen q = new Queen();
+
+            do
+            {
+                int x = rand.Next(8);
+                int y = rand.Next(8);
+
+                q.x = x;
+                q.y = y;
+            }
+            while (QueenExists(q));
+
+            int index = rand.Next(NUM_QUEENS);
+            queens[index] = q;
         }
 
         /// <summary>
