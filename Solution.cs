@@ -36,5 +36,21 @@ namespace QueensGA
             }
         }
 
+        /// <summary>
+        /// Mutate the solution.
+        /// </summary>
+        public void Mutate()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Evaluate the fitness of the solution and return it.
+        /// </summary>
+        /// <returns>Fitness value of the solution</returns>
+        public int EvaluateFitness()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
