@@ -10,7 +10,10 @@ namespace QueensGA
     {
         const int NUM_QUEENS = 8;
         const int BOARD_SIZE = 64;
+        const int ROW_LENGTH = 8;
 
+        //Directions on the board relative to the current position.
+        int[] offsets = { -9, -8, -7, 7, 8, 9 };
         bool[] board;
 
         /// <summary>
@@ -59,12 +62,65 @@ namespace QueensGA
         }
 
         /// <summary>
-        /// Evaluate the fitness of the solution and return it.
+        /// Evaluate the fitness of the solution and return it. Lower is better.
         /// </summary>
         /// <returns>Fitness value of the solution</returns>
         public int EvaluateFitness()
         {
-            throw new NotImplementedException();
+            int fitness = 0;
+
+            for(int i = 0; i < BOARD_SIZE; i++)
+            {
+                if(board[i])
+                {
+                    int position = i;
+
+                    //Check in every diagonal, up, and down for presence of queen.
+                    foreach(int offset in offsets)
+                    {
+                        int offsetPos = position;
+                        offsetPos += offset;
+
+                        while(offsetPos > 0 && offsetPos < (BOARD_SIZE - 1))
+                        {
+                            if (board[offsetPos])
+                                fitness++;
+
+                            offsetPos += offset;
+                        }
+                    }
+
+                    //If queen is not at the beginning of a row.
+                    if (position % ROW_LENGTH != 0 && position != 0)
+                    {
+                        //Check to start of row to presence of queens.
+                        int leftOffset = position - 1;
+                        while (leftOffset % ROW_LENGTH != 0 && leftOffset > 0)
+                        {
+                            //If a queen is found add 1 to fitness.
+                            if (board[leftOffset])
+                                fitness++;
+                            leftOffset -= 1;
+                        }
+                    }
+
+                    //If queen is not at the end of a row.
+                    if (position % ( ROW_LENGTH - 1 ) != 0 && position != (BOARD_SIZE - 1))
+                    {
+                        //Check to end of row for presence of queens.
+                        int rightOffset = position + 1;
+                        while (rightOffset % (ROW_LENGTH - 1) != 0 && rightOffset < (BOARD_SIZE - 1))
+                        {
+                            //If a queen is found add 1 to fitness.
+                            if (board[rightOffset])
+                                fitness++;
+                            rightOffset -= 1;
+                        }
+                    }
+                }
+            }
+
+            return fitness;
         }
     }
 }
