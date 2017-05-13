@@ -16,10 +16,12 @@ namespace QueensGA
 
             if (initialise)
             {
+                Random rand = new Random();
+
                 for (int i = 0; i < solutions.Length; i++)
                 {  
                     Solution solution = new Solution();
-                    solution.Generate();
+                    solution.Generate(rand.Next(Int32.MaxValue));
                     solutions[i] = solution;
                 }
                 
@@ -48,7 +50,7 @@ namespace QueensGA
             for(int i = 0; i < solutions.Length; i++)
             {
                 if (solutions[i] == null)
-                    break;
+                    continue;
 
                 int fitness = solutions[i].EvaluateFitness();
                 if(fitness < fittestFitness)

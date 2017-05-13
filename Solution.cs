@@ -14,6 +14,8 @@ namespace QueensGA
 
     class Solution
     {
+        Random rand = new Random();
+
         const int NUM_QUEENS = 8;
         const int BOARD_SIZE = 64;
         const int ROW_LENGTH = 8;
@@ -40,7 +42,7 @@ namespace QueensGA
             queens = new Queen[NUM_QUEENS];
 
             //Create a child using both parents.
-            Random rand = new Random();
+            
             int crossover = rand.Next(NUM_QUEENS);
 
             for(int i = 0; i < crossover; i++)
@@ -70,9 +72,10 @@ namespace QueensGA
         /// <summary>
         /// Generate a new random layout of 8 queens.
         /// </summary>
-        public void Generate()
+        public void Generate(int seed)
         { 
-            Random rand = new Random();
+            //THIS IS SO HACKY FIX THIS
+            Random rand = new Random(seed);
             int count = 0;
 
             while (count < NUM_QUEENS)
@@ -108,7 +111,6 @@ namespace QueensGA
         /// </summary>
         public void Mutate()
         {
-            Random rand = new Random();
             Queen q = new Queen();
 
             do
@@ -132,77 +134,47 @@ namespace QueensGA
         public int EvaluateFitness()
         {
             int fitness = 0;
-
-            /*
-            for(int i = 0; i < BOARD_SIZE; i++)
-            {
-                if(board[i])
-                {
-                    int position = i;
-
-                    //Check in every diagonal, up, and down for presence of queen.
-                    foreach(int offset in offsets)
-                    {
-                        int offsetPos = position;
-                        offsetPos += offset;
-
-                        while(offsetPos > 0 && offsetPos < (BOARD_SIZE - 1))
-                        {
-                            if (board[offsetPos])
-                                fitness++;
-
-                            offsetPos += offset;
-                        }
-                    }
-
-                    //If queen is not at the beginning of a row.
-                    if (position % ROW_LENGTH != 0 && position != 0)
-                    {
-                        //Check to start of row to presence of queens.
-                        int leftOffset = position - 1;
-                        while (leftOffset % ROW_LENGTH != 0 && leftOffset > 0)
-                        {
-                            //If a queen is found add 1 to fitness.
-                            if (board[leftOffset])
-                                fitness++;
-                            leftOffset -= 1;
-                        }
-                    }
-
-                    //If queen is not at the end of a row.
-                    if (position % ( ROW_LENGTH - 1 ) != 0 && position != (BOARD_SIZE - 1))
-                    {
-                        //Check to end of row for presence of queens.
-                        int rightOffset = position + 1;
-                        while (rightOffset % (ROW_LENGTH - 1) != 0 && rightOffset < (BOARD_SIZE - 1))
-                        {
-                            //If a queen is found add 1 to fitness.
-                            if (board[rightOffset])
-                                fitness++;
-                            rightOffset -= 1;
-                        }
-                    }
-                }
-            }
-            */
+            bool[] badqueen = new bool[8];
 
             for(int i = 0; i < queens.Length; i++)
             {
-                for(int j = i + 1; j < queens.Length; j++)
+                for(int j = 0; j < queens.Length; j++)
                 {
+
+
                     //If horizontal or vertical
-                    if (queens[i].x == queens[j].x || queens[i].y == queens[j].y)
+                    if ((queens[i].x == queens[j].x || queens[i].y == queens[j].y))
+                    {
                         fitness++;
+                        badqueen[i] = true;
+                        badqueen[j] = true;
+                    }
 
                     //If diagonal
-                    int d1 = Math.Abs(queens[i].y - queens[i].x);
-                    int d2 = Math.Abs(queens[j].y - queens[j].x);
+                    int d1 = Math.Abs((queens[i].y+1) - (queens[i].x+1));
+                    int d2 = Math.Abs((queens[j].y+1) - (queens[j].x+1));
                     if (d1 == d2)
+                    {
                         fitness++;
+                        badqueen[i] = true;
+                        badqueen[j] = true;
+                    }
                 }
             }
 
             return fitness;
+        }
+    
+        public String ToString()
+        {
+            string output = "";
+
+            for(int i = 0; i < NUM_QUEENS; i++)
+            {
+                output += "(" + queens[i].x + "," + queens[i].y + ")";
+            }
+
+            return output;
         }
     }
 }

@@ -8,12 +8,13 @@ namespace QueensGA
 {
     class Solver
     {
-        private const int POPULATION_SIZE = 400;
-        private const double MUTATION_RATE = 0.005;
-        private const int TOURNAMENT_SIZE = 15;
+        private const int POPULATION_SIZE = 500;
+        private const double MUTATION_RATE = 0.1;
+        private const int TOURNAMENT_SIZE = 30;
         private const bool ELITISM = true;
 
         private Population _population;
+        Random rand = new Random();
 
         public Solver()
         {
@@ -29,7 +30,6 @@ namespace QueensGA
             {
                 newPopulation.SaveSolution(0, _population.GetFittest());
                 elitismOffset = 1;
-                Console.WriteLine("FITTEST SAVED.");
             }
 
             for (int i = elitismOffset; i < POPULATION_SIZE; i++)
@@ -37,21 +37,27 @@ namespace QueensGA
                 Solution parent1 = TournamentSelect(_population);
                 Solution parent2 = TournamentSelect(_population);
                 Solution child = new Solution(parent1, parent2);
+                Solution child2 = new Solution(parent2, parent1);
+
+                Console.WriteLine("parent1 " + parent1.ToString());
+                Console.WriteLine("parent2 " + parent2.ToString());
+                Console.WriteLine("child   " + child.ToString());
 
                 newPopulation.SaveSolution(i, child);
+
+                if(++i < POPULATION_SIZE)
+                    newPopulation.SaveSolution(i, child2);
             }
 
             MutatePopulation(newPopulation);
 
             _population = newPopulation;
 
-            Console.WriteLine("Fittest = " + _population.GetFittest().EvaluateFitness());
+            //Console.WriteLine("Fittest = " + _population.GetFittest().EvaluateFitness());
         }
 
         private void MutatePopulation(Population population)
         {
-            Random rand = new Random();
-
             for(int i = 0; i < POPULATION_SIZE; i++)
             {
                 if(rand.NextDouble() < MUTATION_RATE)
@@ -68,8 +74,7 @@ namespace QueensGA
             // For each place in the tournament get a random candidate tour and
             // add it
             for (int i = 0; i < TOURNAMENT_SIZE; i++)
-            {
-                Random rand = new Random();
+            { 
                 tournament.SaveSolution(i, population.GetSolution(rand.Next(POPULATION_SIZE)));
             }
             // Get the fittest tour
@@ -80,8 +85,9 @@ namespace QueensGA
         public void DrawFittest()
         {
             Solution fittest = _population.GetFittest();
+            Console.WriteLine("Fittest = " + fittest.EvaluateFitness());
 
-            for(int x = 0; x < 8; x++)
+            for (int x = 0; x < 8; x++)
             {
                 for (int y = 0; y < 8; y++)
                 {

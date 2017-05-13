@@ -12,9 +12,11 @@ namespace QueensGA
         {
             Solver sv = new Solver();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 sv.EvolvePopulation();
+
+               // Console.WriteLine("Iteration " + i + " of 100");
             }
 
             sv.DrawFittest();
